@@ -87,7 +87,7 @@ module FixtureBuilder
       Date::DATE_FORMATS[:default] = Date::DATE_FORMATS[:db]
       begin
         fixtures = tables.inject([]) do |files, table_name|
-          table_klass = table_name.classify.constantize rescue nil
+          table_klass = !force_raw_dump_tables.include?(table_name) && table_name.classify.constantize rescue nil
           if table_klass
             rows = table_klass.all.collect(&:attributes)
           else
